@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+html { scroll-behavior: smooth; }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@utility text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-400 via-purple-300 to-indigo-400;
+}
+
+@utility glass {
+  @apply bg-white/[0.03] border border-white/[0.06] backdrop-blur-xl;
+}
+
