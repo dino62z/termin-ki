@@ -160,14 +160,19 @@ export default function Home() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            messages: [
-              { role: "system", content: "Du bist der TerminKI Sprach-Agent für einen Friseursalon namens 'Salon Haargenau'. Du sprichst Deutsch. Dienste: Damenhaarschnitt 45min/65€, Herrenhaarschnitt 30min/35€, Färben 90min/85€, Färben+Schneiden 120min/120€. Du kannst Termine vorschlagen, Preise nennen, Crypto-Zahlung anbieten. Halte Antworten kurz (max 3 Sätze) für Sprachausgabe. Kein Markdown." },
-              { role: "user", content: text }
-            ]
+            message: text,
+            firma: "Salon Haargenau",
+            branche: "friseur",
+            dienstleistungen: [
+              { name: "Damenhaarschnitt", dauer_minuten: 45, preis_eur_cents: 6500 },
+              { name: "Herrenhaarschnitt", dauer_minuten: 30, preis_eur_cents: 3500 },
+              { name: "Färben", dauer_minuten: 90, preis_eur_cents: 8500 },
+              { name: "Färben + Schneiden", dauer_minuten: 120, preis_eur_cents: 12000 },
+            ],
           }),
         });
         const data = await resp.json();
-        const reply = data.content || "Entschuldigung, ich konnte das nicht verarbeiten. Können Sie das wiederholen?";
+        const reply = data.text || "Entschuldigung, ich konnte das nicht verarbeiten. Können Sie das wiederholen?";
         setConversation(prev => [...prev, { role: "agent", text: reply }]);
         speak(reply);
       } catch {
@@ -487,4 +492,5 @@ export default function Home() {
     </div>
   );
 }
+
 
