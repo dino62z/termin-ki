@@ -22,9 +22,10 @@ function getMockTermine(): Terminvorschlag[] {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { message, kundenId, firma, branche, dienstleistungen } = body as {
+    const { message, kundenId, firma, branche, dienstleistungen, customPrompt } = body as {
       message: string; kundenId?: string; firma?: string; branche?: Branche;
       dienstleistungen?: { name: string; dauer_minuten: number; preis_eur_cents: number }[];
+      customPrompt?: string | null;
     };
     if (!message?.trim()) return NextResponse.json({ error: "Nachricht ist leer" }, { status: 400 });
 
@@ -36,7 +37,7 @@ export async function POST(request: NextRequest) {
       { name: "Faerben", dauer_minuten: 90, preis_eur_cents: 6900 },
       { name: "Straehnen", dauer_minuten: 120, preis_eur_cents: 8900 },
     ];
-    let kundePrompt: string | null = null;
+    let kundePrompt: string | null = customPrompt || null;
 
     if (kundenId && kundenId !== "demo_landing" && process.env.SUPABASE_URL) {
       try {
@@ -74,4 +75,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Interner Fehler" }, { status: 500 });
   }
 }
+
 
